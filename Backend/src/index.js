@@ -15,6 +15,8 @@ dotenv.config(
 );
 const PORT=process.env.PORT;
 
+app.use(express.json());//from this we can get a json data from req.body etc
+
 app.use("/api/auth",authRoutes);
 
 app.listen(PORT,()=>{
