@@ -6,12 +6,14 @@ export const signup= async(req, res) => {
   const {fullName,email,password}=req.body;
     try {
      if(password.length<6){ 
-      res.status(400).json({message:"password must be at least 6 length"});
+        res.status(400).json({message:"password must be at least 6 length"});
      } 
+     console.log("yatin");
      
+
      if(!(fullName||email))
      {
-      res.status(200).json({message:"All credentials are required"})
+       res.status(200).json({message:"All credentials are required"})
      }
 
      const user=await User.findOne({email});
@@ -42,7 +44,7 @@ export const signup= async(req, res) => {
         })
      }
      else{
-      res.status(400).json({message:"Invalid user credentials"});
+       res.status(400).json({message:"Invalid user credentials"});
      }
     }
 
@@ -53,10 +55,45 @@ export const signup= async(req, res) => {
     }
   }
   
-export const login= (req, res) => {
-    res.send("login route");
+export const login= async (req, res) => {
+   const {email, password}=req.body;
+   
+   try {
+    const user=await User.findOne({email});
+ 
+    if(!user){
+     return res.status(400).json({message:"Invalid  credentials"});
+    }
+ 
+    const isPasswordCorrect=await bcrypt.compare(password,user.password);
+    
+    if(!isPasswordCorrect)
+    {
+     return res.status(400).json({message:"Invalid   credentials"});
+    }
+  
+    
+    generateToken(user._id,res);
+ 
+    res.status(200).json({
+     user_id:user._id,
+     fullName:user.fullName,
+     email:user.email,
+     profilePic:user.profilePic,
+    })
+   } catch (error) {
+    console.log("Error in signin controller",error.message);
+    res.status(500).json({message:"Internal server error"});
+   }
   }
-export const logout= (req, res) => {
-    res.send("logout route");
+
+export const logout= async (req, res) => {
+    try {
+      res.cookie("jwt","",{maxAge:0});
+      res.status(200).json({message:"Loggout Successfully"})
+    } catch (error) {
+      console.log("Error in logout controller",error.message);
+      res.status(500).json({message:"Internal Server Error"});
+    }
   } 
   
