@@ -3,7 +3,7 @@ import {User} from "../model/user.model.js";
 
 export const protectRoute=async(req,res,next)=>{
    try {
-     const token=req.cookie.jwt;//here jwt is cookie name if we give cookie name x then we have to write x instead of jwt.
+     const token=req.cookies.x;//here jwt is cookie name if we give cookie name x then we have to write x instead of jwt.
  
      if(!token){
          return res.status(401).json({message:"Unauthorized -No Token Provided"})
@@ -11,6 +11,7 @@ export const protectRoute=async(req,res,next)=>{
      const decode=jwt.verify(token,process.env.JWT_SCERET);
  
      if(!decode){
+
          return res.status(401).json({message:"Unauthorized-Invalid token"});
      }
  
