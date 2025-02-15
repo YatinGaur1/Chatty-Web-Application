@@ -2,6 +2,7 @@
 
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
+import cookieParser from "cookie-parser";
 
 import dotenv from "dotenv";
 import { connectDB } from "./libs/db.libs.js";
@@ -16,6 +17,7 @@ dotenv.config(
 const PORT=process.env.PORT;
 
 app.use(express.json());//from this we can get a json data from req.body etc
+app.use(cookieParser());//allow u to grap jwt from cookie;
 
 app.use("/api/auth",authRoutes);
 
