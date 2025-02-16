@@ -2,8 +2,8 @@
 
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
+import messageRoutes from "./routes/message.routes.js"
 import cookieParser from "cookie-parser";
-
 import dotenv from "dotenv";
 import { connectDB } from "./libs/db.libs.js";
 
@@ -20,6 +20,7 @@ app.use(express.json());//from this we can get a json data from req.body etc
 app.use(cookieParser());//allow u to grap jwt from cookie;
 
 app.use("/api/auth",authRoutes);
+app.use("/api/message",messageRoutes);
 
 app.listen(PORT,()=>{
     console.log("server is running on port",PORT);
