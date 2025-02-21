@@ -26,6 +26,7 @@ export const SignUpPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const success=validateForm();
+    console.log(success);
 
     if(success===true) signUp(formData);
   };

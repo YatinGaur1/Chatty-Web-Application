@@ -17,7 +17,7 @@ export const useAuthStore=create((set)=>({
             const res=await axiosInstance.get("/auth/check");
             set({authUser:res.data})
         } catch (error) {
-            console.log("Error in checkAuth in useauthstore",error.message);
+            console.log("Error in checkAuth in useauthstore",error.response.data.message);
             set({authUser:null})
         }finally{
             set({ischeckingAuth:false})
@@ -38,6 +38,22 @@ export const useAuthStore=create((set)=>({
     }
     },
 
+    logIn:async(data)=>{
+        set({isLoggingIn:true})
+        try {
+            const res=await axiosInstance.post("/auth/login",data);
+            console.log(res);
+            set({authUser:res.data});
+            toast.success("LoggedIn Successfully");
+        } catch (error) {
+            toast.error(error.response.data.message);
+            console.log("error in login")
+            
+        }finally{
+            set({isLoggingIn:false})
+        }
+    },
+    
     logOut:async()=>{
         try {
             await axiosInstance.post("auth/logout");
@@ -48,18 +64,6 @@ export const useAuthStore=create((set)=>({
             console.log("error occured in logout")
         }
     },
-    login:async(data)=>{
-        set({isLoggingIn:true})
-        try {
-            const res=await axiosInstance.post("/auth/login",data);
-            set({authUser:res.data});
-            toast.success("LoggedIn Successfully");
-        } catch (error) {
-            toast.error(error.response.data.message);
-            console.log("error in login")
-        }finally{
-            set({isLoggingIn:false})
-        }
-    }
+    
 
 }));

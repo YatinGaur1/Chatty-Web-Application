@@ -3,7 +3,7 @@ import { useAuthStore } from "../store/useAuthStore.js";
 import { Eye, EyeOff, Loader2, Lock, Mail, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
 import AuthImagePattern from "../components/AuthImagePattern.jsx";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,22 +11,21 @@ export const LoginPage = () => {
     email: "",
     password: "",
   });
-  const { login, isLoggingIn } = useAuthStore();
+  const { logIn, isLoggingIn } = useAuthStore();
 
-  const validateForm = async () => {
-    if (!formData.email.trim()) return toast.error("Email is required");
-    if (!/\S+@\S+\.\S+/.test(formData.email))
-      return toast.error("Email is Invalid");
-    if (!formData.password) return toast.error("Password is required");
-    if (formData.password.length < 6)
-      return toast.error("Password must be at least 6 characters");
+  // const validateForm = async () => {
+  
+  //   if(!formData.email.trim()) return toast.error("Email is required");
+  //   if(!(/\S+@\S+\.\S+/).test(formData.email)) return toast.error("Email is Invalid");
+  //   if(!formData.password) return toast.error("Password is required");
+  //   if(formData.password.length<6) return toast.error("Password must be at least 6 characters");
 
-    return true;
-  };
+  //   return true;
+  // };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = validateForm();
-    if (success === true) login(formData);
+      logIn(formData);
   };
 
   return (
