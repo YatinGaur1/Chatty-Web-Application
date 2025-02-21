@@ -20,7 +20,7 @@ export const useAuthStore=create((set)=>({
             console.log("Error in checkAuth in useauthstore",error.response.data.message);
             set({authUser:null})
         }finally{
-            set({ischeckingAuth:false})
+            set({isCheckingAuth:false})
         }
     },
 
