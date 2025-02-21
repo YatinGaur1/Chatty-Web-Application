@@ -7,7 +7,6 @@ import { ProfilePage } from "./pages/ProfilePage.jsx";
 import { LoginPage } from "./pages/LoginPage.jsx";
 import { useEffect } from "react";
 import { useAuthStore } from "./store/useAuthStore.js";
-import {Loader}from "lucide-react"
 import{Toaster}from "react-hot-toast"
 
 
@@ -15,8 +14,8 @@ const App = () => {
   const{authUser,checkAuth,isCheckingAuth}=useAuthStore();
 
   useEffect(()=>{checkAuth();},[checkAuth]);
-  console.log(authUser,isCheckingAuth);
-  console.log(!authUser)
+
+  console.log(authUser)
 
   // if(isCheckingAuth &&!authUser)
   //    return(

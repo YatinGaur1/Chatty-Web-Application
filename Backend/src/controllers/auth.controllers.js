@@ -54,13 +54,13 @@ export const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid  credentials" });
+      return res.status(400).json({ message: "You Not SignUp,Please Signup" });
     }
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Invalid   credentials" });
+      return res.status(400).json({ message: "Invalid Password Credentials " });
     }
 
     generateToken(user._id, res);
@@ -79,7 +79,7 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    res.cookie("jwt", "", { maxAge: 0 });
+    res.cookie("x", "", { maxAge: 0 });
     res.status(200).json({ message: "Loggout Successfully" });
   } catch (error) {
     console.log("Error in logout controller", error.message);
@@ -113,8 +113,10 @@ export const updateProfile = async (req, res) => {
 
 export const checkAuth=(req,res)=>{
   try {
+   
     res.status(200).json(req.user);
   } catch (error) {
+    console.log(req.user);
     console.log("Error in check Auth controller",error.message);
     res.status(500).json({message:"Internal server error"});
   }
