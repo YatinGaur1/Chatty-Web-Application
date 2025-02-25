@@ -1,22 +1,23 @@
 import {create} from "zustand"
 import {axiosInstance}from "../lib/axios.js"
 import {toast} from "react-hot-toast"
+import{io}from "socket.io-client"
 
-
-
-export const useAuthStore=create((set)=>({
+export const useAuthStore=create((set,get)=>({
     authUser:null,
     isSigningUp:false,
     isLoggingIn:false,
     isUpdatingProfile:false,
     isCheckingAuth:true,
     onlineUsers:[],
+    socket:null,
      
     checkAuth:async()=>{
         try {
             const res=await axiosInstance.get("/auth/check");
             set({authUser:res.data})
-        } catch (error) {
+            get().connectSocket();
+            } catch (error) {
             console.log("Error in checkAuth in useauthstore",error.response.data.message);
             set({authUser:null})
         }finally{
@@ -30,6 +31,7 @@ export const useAuthStore=create((set)=>({
         const res=await axiosInstance.post("/auth/signup",data);
         set({authUser:res.data});
         toast.success("Account Created Successfully");
+        get().connectSocket();
     } catch (error) {
         toast.error(error.response.data.message);
         console.log("error occured in signup");
@@ -45,6 +47,7 @@ export const useAuthStore=create((set)=>({
             console.log(res);
             set({authUser:res.data});
             toast.success("LoggedIn Successfully");
+            get().connectSocket();
         } catch (error) {
             toast.error(error.response.data.message);
             console.log("error in login")
@@ -59,6 +62,7 @@ export const useAuthStore=create((set)=>({
             await axiosInstance.post("auth/logout");
             set({authUser:null})
             toast.success("LoggedOut Successfully")
+            get().disconnectSocket();
         } catch (error) {
             toast.error(error.response.data.message)
             console.log("error occured in logout")
@@ -77,7 +81,9 @@ export const useAuthStore=create((set)=>({
         }finally{
             set({isUpdatingProfile:false})
         }
-    }
+    },
+    connectSocket:()=>{},
+    disconnectSocket:()=>{},
     
 
 }));
