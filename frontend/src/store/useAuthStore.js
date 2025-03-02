@@ -3,10 +3,11 @@ import { axiosInstance } from "../lib/axios.js";
 import { toast } from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 
-const BASE_URL = "http://localhost:5002"; //backend url
+const BASE_URL =
+  import.meta.env.MODE === "development" ? "http://localhost:5002" : "/"; //backend url
 
 export const useAuthStore = create((set, get) => ({
-  authUser: null, 
+  authUser: null,
   isSigningUp: false,
   isLoggingIn: false,
   isUpdatingProfile: false,
@@ -67,7 +68,6 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: null });
       toast.success("LoggedOut Successfully");
       await get().disconnectSocket();
-
     } catch (error) {
       toast.error(error.response.data.message);
       console.log("error occured in logout");
@@ -97,9 +97,9 @@ export const useAuthStore = create((set, get) => ({
     });
     socket.connect();
     set({ socket: socket });
-    socket.on("getOnlineUsers",(userIds)=>{
-        set({onlineUsers:userIds});
-    })
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+    });
   },
   disconnectSocket: () => {
     if (get().socket?.connected) get().socket.disconnect();
