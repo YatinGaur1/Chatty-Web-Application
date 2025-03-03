@@ -22,7 +22,7 @@ const __dirname=path.resolve();
 app.use(express.json());//from this we can get a json data from req.body etc
 app.use(cookieParser());//allow u to grap jwt from cookie;
 app.use(cors({
-    origin:"http://localhost:5174",
+    origin:"http://localhost:5173",
     credentials:true,
 }))//this is for connected frontend to backend
 
